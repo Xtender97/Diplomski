@@ -14,25 +14,41 @@
         </div>
     </div>
     <div class="options">
+        <div class = "error" *ngIf="error.length > 0">
+            <div class="errlabel">Error</div>
+            <div *ngFor="let err of error" class="errorMessage">{{err}}   <span class="closebtn" (click)="deleteError(err)">&times;</span> </div>
+        </div>
+        <div class="text">
+            <div class="label">Text</div>
+            <textarea class="textarea" [(ngModel)]="text" spellcheck="false"></textarea>
+        </div>
         <div class="inputs">
             <div class="inputGroup">
                 <label class="inputLabel" for="args">Arguments</label>
-                <input type="text" class="inputField" id="args">
+                <input type="text" class="inputField" id="args" [(ngModel)]="args">
             </div>
             <div class="inputGroup">
 
                 <label class="inputLabel" for="stdin">Input</label>
-                <input type="text" class="inputField" id="stdin">
+                <input type="text" class="inputField" id="stdin" [(ngModel)]="stdin">
             </div>
         </div>
         <div class="commands">
             <button class="button" (click)="runCode()">Run</button>
             <button class="button" (click)="analyzeCode()">Analyze</button>
+            <button class="button" (click)="saveTemplate()">Save</button>
+
         </div>
-        <div *ngIf="variables.length>0" class="detections">
+        <div *ngIf="variables.length>0 || detections.useOfArgs || detections.useOfInput" class="detections">
             <div class="label">Detected</div>
             <div class="variable" *ngFor="let variable of variables">
-                Variable {{variable.name}} with value {{variable.value}}
+                Variable <span class="blue">{{variable.name}} </span>with value <span class="blue">{{variable.value}}</span>
+            </div>
+            <div *ngIf="detections.useOfArgs" class="variable">
+                Detected use of <span class="blue">arguments</span>
+            </div>
+            <div *ngIf="detections.useOfInput" class="variable">
+                Detected use of <span class="blue">input</span>
             </div>
         </div>
     </div>

@@ -8,10 +8,16 @@ exports.execute = function executeMain(progName, res, args, input) {
         if (err) {
             console.error(err);
             res.status(200).json({
-            
+
                 stderr: err.toString()
             })
             return;
+        }
+        if (args) {
+            args = convertStringArgsToArray(args);
+        }
+        else {
+            args = null;
         }
         let cExec = spawn('./a.out', args);
 
@@ -35,14 +41,14 @@ exports.execute = function executeMain(progName, res, args, input) {
         cExec.on('close', (code) => {
             if (code != null) {
                 console.log(`child process exited with code ${code}`);
-                
+
             }
             else {
                 // regexVarArrayDefinition(progName);
             }
             res.status(200).json({
                 stdout: out.toString(),
-                stderr: error?error.toString():error
+                stderr: error ? error.toString() : error
             })
         });
 
@@ -52,20 +58,81 @@ exports.execute = function executeMain(progName, res, args, input) {
 
 }
 
+function convertStringArgsToArray(args) {
+    let array = args.split(' ');
+    console.log(array);
+    return array;
+}
+
+exports.argsDetected = function detectedArgumentUse(code) {
+    let regex = new RegExp(`\\b(argc|argv)\\b`, 'g');
+    let result = [...code.matchAll(regex)];
+    if (result.length > 2) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+exports.inputDetected = function detectedInputUse(code) {
+    let regex = new RegExp(`\\b(scanf|getchar)\\b`, 'g');
+    let result = [...code.matchAll(regex)];
+    if (result.length > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 exports.analyzer = function regexVarArrayDefinition(code) {
     let regex = new RegExp(`\\b(unsigned)?\\s*(int|char|long|float|double)\\s*(\\w*)\\s*\\[(\\w*)?\\](\\[(\\w*)?\\])?\\s*\\=\\s*\\s*\\{([^\\}]*)\\s*\\}(\\s*\\,\\s*(\\w*)\\s*\\[(\\w*)?\\](\\[(\\w*)?\\])?\\s*\\=\\s*\\s*\\{([^\\}]*)\\s*\\})*`, 'g');
     let result = [...code.matchAll(regex)];
     let variables = analyzeArrayDefinition(result);
     console.log(variables);
-    return variables;
-    // changeArrayValue(variables);
-    // code = swapArrayValues(variables, code);
-    // console.log(code);
-    // fs.writeFile(path.join(__dirname, `/${fileName}`), code, (data) => {
-    //     console.log('Successfully wrote to file...');
-    // });
-    // executeMain(fileName);
 
+    let regex1 = new RegExp(`^\\s*(unsigned\\s*)?(int|char)\\s*(\\w+)\\s*=\\s*(0x\\d+|\\d+|'\\w'|"\\w+")([^;]*)`, 'gm');
+    let result1 = [...code.matchAll(regex1)];
+    let variables1 = analyzeVarDefinition(result1);
+    variables = variables.concat(variables1);
+    return variables;
+
+
+
+}
+
+function analyzeVarDefinition(regexResult) {
+    let variables = [];
+    regexResult.forEach(variable => {
+        let obj = {
+            type: (variable[1] ? variable[1] + " " : '') + variable[2],
+            name: variable[3],
+            values: variable[4],
+            raw: variable[0],
+            class: 'var'
+        }
+        variables.push(obj);
+        if (variable[5]) {
+            let regex = new RegExp(`(\\w*)\\s*=\\s*(0x\\d+|\\d+|'\\w'|"\\w+")`, 'g');
+            let res = [...variable[5].matchAll(regex)];
+            res.forEach(
+                item => {
+                    let obj = {
+                        type: (variable[1] ? variable[1] + " " : '') + variable[2],
+                        name: item[1],
+                        values: item[2],
+                        raw: item[0],
+                        class: 'var'
+                    }
+                    variables.push(obj)
+                }
+            )
+        }
+
+    })
+
+    return variables;
 
 }
 
@@ -78,7 +145,8 @@ function analyzeArrayDefinition(regexResult) {
                 type: (variable[1] ? variable[1] + " " : '') + variable[2],
                 name: variable[3],
                 values: variable[7],
-                raw: variable[0]
+                raw: variable[0],
+                class: 'array'
             }
             variables.push(obj);
 
@@ -87,7 +155,9 @@ function analyzeArrayDefinition(regexResult) {
                     type: (variable[1] ? variable[1] + " " : '') + variable[2],
                     name: variable[9],
                     values: variable[13],
-                    raw: variable[8]
+                    raw: variable[8],
+                    class: 'array'
+
                 }
                 variables.push(obj2);
 

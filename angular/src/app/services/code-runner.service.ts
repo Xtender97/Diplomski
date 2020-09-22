@@ -13,11 +13,20 @@ export class CodeRunnerService {
     private http: HttpClient
   ) { }
 
-  runCode(code: string) {
-    return this.http.post(this.apiUrl + `/runCode`, { code: code });
+  runCode(code: string, args: string, stdin: string) {
+    let data = {
+      code: code,
+      args: args,
+      stdin: stdin
+    };
+    return this.http.post(this.apiUrl + `/runCode`,data);
   }
   analyzeCode(code: string) {
     return this.http.post(this.apiUrl + `/analyzeCode`, { code: code });
+  }
+
+  saveTemplate(template: any){
+    return this.http.post(this.apiUrl + `/saveTemplate`, template);
   }
 
 }

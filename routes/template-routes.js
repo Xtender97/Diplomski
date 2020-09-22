@@ -8,4 +8,6 @@ router.post('/runCode', bodyparser.json(), templateController.runCode);
 
 router.post('/analyzeCode', bodyparser.json(), templateController.analyzeCode);
 
+router.post('/saveTemplate', bodyparser.json(), templateController.saveTemplate);
+
 module.exports = router;

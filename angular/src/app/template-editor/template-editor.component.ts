@@ -14,7 +14,13 @@ export class TemplateEditorComponent implements OnInit {
   editor: any;
   stdout: string;
   stderr: string;
+  detections: {useOfArgs : boolean, useOfInput: boolean} = {useOfArgs: false, useOfInput: false};
   variables:any[] = [];
+  args:string;
+  stdin:string;
+  text: string;
+  error: string [] = [];
+
   constructor(
     private codeRunner: CodeRunnerService
   ) { }
@@ -37,8 +43,9 @@ export class TemplateEditorComponent implements OnInit {
   runCode() {
     this.stderr = '';
     this.stdout = '';
-    this.codeRunner.runCode(this.code).subscribe(
+    this.codeRunner.runCode(this.code, this.args, this.stdin).subscribe(
       (data: any) => {
+        this.error = [];
         console.log(data);
         if (data.stdout) {
           this.stdout = data.stdout;
@@ -49,22 +56,61 @@ export class TemplateEditorComponent implements OnInit {
       },
       (err) => {
         console.log(err);
+        this.error.push(err.error);
       }
     )
   }
 
   analyzeCode(){
     this.codeRunner.analyzeCode(this.code).subscribe(
-      (data: any[])=> {
+      (data: {variables: any[], useOfArgs: boolean, useOfInput: boolean})=> {
         console.log(data);
-        data.forEach( variable => {
+        data.variables.forEach( variable => {
           this.variables.push({name:variable.name, value:variable.values});
         })
+        this.detections = {
+          useOfInput :data.useOfInput,
+          useOfArgs : data.useOfArgs
+        }
+
       },
       err => {
         console.log(err);
+        this.error.push(err.error);
+
       }
     );
+  }
+  
+  saveTemplate(){
+    this.error = [];
+    if(!this.text){
+      this.error.push('Please insert template text!');
+    }
+    if(!this.code){
+      this.error.push('Please insert template code!');
+
+    }
+    let template = {
+      code : this.code, 
+      args :this.args,
+      stdin : this.stdin,
+      vars : this.variables,
+      text : this.text
+    }
+
+    if(this.error.length> 0){
+      return;
+    }
+    this.codeRunner.saveTemplate(template).subscribe((data => {
+      console.log(data);
+      this.error = [];
+    }))
+  }
+
+  deleteError(err){
+    this.error = this.error.filter(item => item != err);
+    console.log('deletederrot');
   }
 
 }
