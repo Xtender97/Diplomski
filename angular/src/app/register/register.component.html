@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="card">
+        <div class="header">Sign Up</div>
+        <form (submit)="signUp()">
+            <label class="label">First Name</label>
+            <input name="firstName" class="input" type="text" [(ngModel)]="user.firstName">
+
+            <label class="label">Last Name</label>
+            <input name="lastName" class="input" type="text" [(ngModel)]="user.lastName">
+
+            <label class="label">Email</label>
+            <input name="email" class="input" type="text" [(ngModel)]="user.email">
+
+            <label class="label">Username</label>
+            <input name="username" class="input" type="text" [(ngModel)]="user.username">
+
+            <label class="label">Password</label>
+            <input name="password" class="input" type="password" [(ngModel)]="user.password">
+            <div class=right>
+                <button class="button" type="submit">Sign Up</button>
+            </div>
+            <div class=right>
+                Already have an account? <a routerLink="/login">Sign in</a>
+
+            </div>
+
+        </form>
+    </div>
+</div>

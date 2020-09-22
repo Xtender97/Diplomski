@@ -17,6 +17,11 @@ app-root {
     margin: 0px 3px;
     /* color: white; */
 }
+
+.green {
+    background-color:  rgb(60, 189, 28);
+
+}
 .button:hover{
     cursor: pointer;
     background-color:  rgb(55, 177, 25);

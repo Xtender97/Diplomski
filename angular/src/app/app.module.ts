@@ -7,11 +7,15 @@ import { TemplateEditorComponent } from './template-editor/template-editor.compo
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TemplateEditorComponent
+    TemplateEditorComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
