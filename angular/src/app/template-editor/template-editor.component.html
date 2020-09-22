@@ -1,0 +1,39 @@
+<div class="grid-container">
+    <div class="editor">
+        <ngx-monaco-editor style="height: 100%;" [options]="editorOptions" [(ngModel)]="code" (onInit)="onInit($event)"
+            (paste)="onPaste()"></ngx-monaco-editor>
+    </div>
+    <div class="console">
+        <div class="stdout">
+            <div class="label">Output </div>
+            <div>{{stdout}}</div>
+        </div>
+        <div class="stderr">
+            <div class="label">Errors</div>
+            <div>{{stderr}}</div>
+        </div>
+    </div>
+    <div class="options">
+        <div class="inputs">
+            <div class="inputGroup">
+                <label class="inputLabel" for="args">Arguments</label>
+                <input type="text" class="inputField" id="args">
+            </div>
+            <div class="inputGroup">
+
+                <label class="inputLabel" for="stdin">Input</label>
+                <input type="text" class="inputField" id="stdin">
+            </div>
+        </div>
+        <div class="commands">
+            <button class="button" (click)="runCode()">Run</button>
+            <button class="button" (click)="analyzeCode()">Analyze</button>
+        </div>
+        <div *ngIf="variables.length>0" class="detections">
+            <div class="label">Detected</div>
+            <div class="variable" *ngFor="let variable of variables">
+                Variable {{variable.name}} with value {{variable.value}}
+            </div>
+        </div>
+    </div>
+</div>
