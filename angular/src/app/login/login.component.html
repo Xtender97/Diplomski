@@ -1,19 +1,25 @@
 <div class="container">
     <div class="card">
-        <div class="header">Sign Up</div>
-        <form>
-            
+        <div class="header">Sign In</div>
+        <form (submit)="login()">
+
             <label class="label">Username</label>
-            <input class="input" type="text">
+            <input name="username" class="input" type="text" [(ngModel)]="username" #user="ngModel" required>
+            <app-message class="p-col-12" [parent]="user"></app-message>
 
             <label class="label">Password</label>
-            <input class="input" type="password">
+            <input name="password" class="input" type="password" [(ngModel)]="password" #pass="ngModel" required>
+            <app-message class="p-col-12" [parent]="pass"></app-message>
+
             <div class=right>
                 <button class="button" type="submit">Sign In</button>
             </div>
             <div class=right>
                 Don't have an account? <a routerLink="/register">Sign up</a>
 
+            </div>
+            <div class="errorMessage right">
+                {{error}}
             </div>
 
         </form>

@@ -1,0 +1,14 @@
+<div class="warning" *ngIf="this.parent.invalid && (this.parent.touched || this.parent.dirty)">
+ 
+    <div *ngIf="this.parent.errors.required">
+        {{requiredMessage}}
+    </div>
+    <div *ngIf="this.parent.errors.email">
+        {{emailMessage}}
+    </div>
+    <div *ngIf="this.parent.errors.pattern">
+        {{patternMessage}}
+    </div>
+
+    
+</div>

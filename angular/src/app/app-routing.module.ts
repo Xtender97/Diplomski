@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
-  { path: '', component: TemplateEditorComponent },
+  { path: 'admin', component: TemplateEditorComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
 

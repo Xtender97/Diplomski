@@ -3,25 +3,36 @@
         <div class="header">Sign Up</div>
         <form (submit)="signUp()">
             <label class="label">First Name</label>
-            <input name="firstName" class="input" type="text" [(ngModel)]="user.firstName">
+            <input name="firstName" class="input" type="text" [(ngModel)]="user.firstName" required #first="ngModel">
+            <app-message class="p-col-12" [parent]="first"></app-message>
 
             <label class="label">Last Name</label>
-            <input name="lastName" class="input" type="text" [(ngModel)]="user.lastName">
+            <input name="lastName" class="input" type="text" [(ngModel)]="user.lastName" required #last="ngModel">
+            <app-message class="p-col-12" [parent]="last"></app-message>
 
             <label class="label">Email</label>
-            <input name="email" class="input" type="text" [(ngModel)]="user.email">
+            <input name="email" class="input" type="text" [(ngModel)]="user.email" required email #emailInput="ngModel"
+                [ngModelOptions]="{updateOn: 'blur'}">
+            <app-message class="p-col-12" [parent]="emailInput"></app-message>
 
             <label class="label">Username</label>
-            <input name="username" class="input" type="text" [(ngModel)]="user.username">
+            <input name="username" class="input" type="text" [(ngModel)]="user.username" required #username="ngModel">
+            <app-message class="p-col-12" [parent]="username"></app-message>
+
 
             <label class="label">Password</label>
-            <input name="password" class="input" type="password" [(ngModel)]="user.password">
-            <div class=right>
-                <button class="button" type="submit">Sign Up</button>
+            <input name="password" class="input" type="password" [(ngModel)]="user.password" required #pass="ngModel">
+            <app-message class="p-col-12" [parent]="pass"></app-message>
+
+            <div class="right">
+                <button class="button" type="submit" [disabled]="(pass.invalid || username.invalid || emailInput.invalid || last.invalid || first.invalid)">Sign Up</button>
             </div>
-            <div class=right>
+            <div class="right">
                 Already have an account? <a routerLink="/login">Sign in</a>
 
+            </div>
+            <div class="errorMessage right">
+                {{error}}
             </div>
 
         </form>

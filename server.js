@@ -4,7 +4,9 @@ const app = express();
 const cors = require('cors');
 const sequelize = require('./databaseConnection');
 const templates = require('./models/templates');
-const templateRouter = require('./routes/template-routes')
+const templateRouter = require('./routes/template-routes');
+const user = require('./models/user');
+const authRouter = require('./routes/auth-routes')
 
 
 const path = require('path');
@@ -58,6 +60,7 @@ app.set("port", port);
 app.use(cors());
 
 app.use('/template',templateRouter);
+app.use('/auth', authRouter);
 
 
 // app.use('/api/auth', auth);

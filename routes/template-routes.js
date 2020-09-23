@@ -2,7 +2,10 @@ let express = require("express");
 let router = express.Router();
 const bodyparser = require('body-parser');
 
-const templateController = require('../controllers/template-controller')
+const templateController = require('../controllers/template-controller');
+const authGuard = require('../guards/auth.guard');
+
+router.use(authGuard);
 
 router.post('/runCode', bodyparser.json(), templateController.runCode);
 

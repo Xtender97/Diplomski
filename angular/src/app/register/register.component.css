@@ -49,3 +49,7 @@
 a {
     text-decoration: none;
 }
+
+.errorMessage {
+    color: red;
+}
