@@ -12,6 +12,8 @@ import { RegisterComponent } from './register/register.component';
 import { MessageComponent} from './message/message.component'
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { NavbarComponent } from './navbar/navbar.component';
+import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     LoginComponent,
     RegisterComponent,
     MessageComponent,
-    NavbarComponent
+    NavbarComponent,
+    StudentDashboardComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

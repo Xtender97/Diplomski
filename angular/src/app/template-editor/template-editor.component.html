@@ -37,6 +37,7 @@
             <button class="button" (click)="runCode()">Run</button>
             <button class="button" (click)="analyzeCode()">Analyze</button>
             <button class="button" (click)="saveTemplate()">Save</button>
+            <button class="button" (click)="formatCode()">Format</button>
 
         </div>
         <div *ngIf="variables.length>0 || detections.useOfArgs || detections.useOfInput" class="detections">

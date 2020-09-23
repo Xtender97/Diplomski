@@ -6,7 +6,8 @@ const sequelize = require('./databaseConnection');
 const templates = require('./models/templates');
 const templateRouter = require('./routes/template-routes');
 const user = require('./models/user');
-const authRouter = require('./routes/auth-routes')
+const authRouter = require('./routes/auth-routes');
+const testRouter = require('./routes/test-routes');
 
 
 const path = require('path');
@@ -61,6 +62,7 @@ app.use(cors());
 
 app.use('/template',templateRouter);
 app.use('/auth', authRouter);
+app.use('/test', testRouter);
 
 
 // app.use('/api/auth', auth);

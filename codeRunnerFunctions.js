@@ -58,6 +58,62 @@ exports.execute = function executeMain(progName, res, args, input) {
 
 }
 
+exports.testExecute = function executeMain(progName, args, input) {
+    return new Promise((resolve, reject) =>{
+        exec(`gcc ${progName} -o ${progName}.out`, (err, stdout, stderr) => {
+            if (err) {
+                console.error(err);
+                resolve(null);
+            }
+            if (args) {
+                args = convertStringArgsToArray(args);
+            }
+            else {
+                args = null;
+            }
+            let cExec = spawn(`${progName}.out`, args);
+
+    
+            if (input) {
+                const inStream = new Readable();
+                inStream.push(input);
+                inStream.push(null);
+                inStream.pipe(cExec.stdin);
+            }
+            let out, error;
+            cExec.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+                out = data;
+            });
+    
+            cExec.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+                error = data;
+            });
+    
+            cExec.on('close', (code) => {
+                if (code != null) {
+                    console.log(`child process exited with code ${code}`);
+                    resolve({code:code, stdout: out});
+
+                }
+                else {
+                    // regexVarArrayDefinition(progName);
+                    resolve(null);
+                }
+               
+    
+            });
+    
+            console.log(stdout);
+            console.log(stderr);
+        });
+    });
+
+    
+
+}
+
 function convertStringArgsToArray(args) {
     let array = args.split(' ');
     console.log(array);

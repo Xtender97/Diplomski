@@ -1,0 +1,15 @@
+<div class="container">
+    <div *ngIf="data.length > 0" class="text">
+        {{data[0].text}}
+    </div>
+   
+
+    <textarea class="code" disabled="true">{{data[0].code}}</textarea>
+    <div class="anwsers">
+        <div *ngFor="let anwser of data[0].anwsers" class="anwser">
+            <label for="{{anwser}}">{{anwser}}</label>
+            <input type="radio" value="{{anwser}}" name="anwser" id="{{anwser}}">
+        </div>
+        <button class="button" type="button" (click)="next()">Next</button>
+    </div>
+</div>

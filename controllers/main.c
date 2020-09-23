@@ -1,18 +1,26 @@
 #include <stdio.h>
-int process(char *str) {
-	if(!*str) return 1;
-	int c = process(str + 1);
-	*str = '0' + '9' - *str + c;
-	c = 0;
-	if(*str > '9') {
-	c = 1; *str = '0';
-	}
-	return c;
+void fja(int *a, int n)
+{
+    int i, j, k, l;
+    for (i = 1; i < n; i++)
+    {
+        k = a[i];
+        for (j = (l = i) - 1;
+        j >= 0 && a[j] < k; l = j--)
+        a[l] = a[j];
+        a[l] = k;
+    }
 }
-int main(int argc, char *argv[]) {
-	for (int i = 1; i < argc; i++) {
-	process(argv[i]);
-	printf("%s ", argv[i]);
-	}
-	return 0;
+void main()
+{
+    int *a, i, j, k, l, n, m1, m2;
+    scanf("%d", &n);
+    a = malloc(n * sizeof(int));
+    for (i = 0; i < n; i++)
+    scanf("%d", &a[i]);
+    fja(a, n / 2);
+    fja(a + n / 2, n / 2);
+    for (i = 0; i < n; i++)
+    printf("%d ", a[i]);
+    free(a);
 }

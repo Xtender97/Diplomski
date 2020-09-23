@@ -14,12 +14,12 @@ export class TemplateEditorComponent implements OnInit {
   editor: any;
   stdout: string;
   stderr: string;
-  detections: {useOfArgs : boolean, useOfInput: boolean} = {useOfArgs: false, useOfInput: false};
-  variables:any[] = [];
-  args:string;
-  stdin:string;
+  detections: { useOfArgs: boolean, useOfInput: boolean } = { useOfArgs: false, useOfInput: false };
+  variables: any[] = [];
+  args: string;
+  stdin: string;
   text: string;
-  error: string [] = [];
+  error: string[] = [];
 
   constructor(
     private codeRunner: CodeRunnerService
@@ -34,10 +34,34 @@ export class TemplateEditorComponent implements OnInit {
   }
 
   onPaste() {
-    let regex = new RegExp(`^\\s+`, 'mg');
-    // let regex1 = new RegExp(`;`,'g');
-    // this.code = this.code.replace(regex1, `;\n`);
-    this.code = this.code.replace(regex, `\t`);
+    this.formatCode();
+  }
+
+  formatCode() {
+    let lines = this.code.split('\n');
+    let newLines = [];
+    let depth: number = 0;
+    lines.forEach(line => {
+      let regex1 = new RegExp(`}`, 'g');
+      let result1 = line.match(regex1);
+
+      if (result1) {
+        depth -= line.match(regex1).length;
+      }
+      let newLine = line.trim();
+      for (let i = depth; i > 0; i--) {
+        newLine = "    " + newLine;
+      }
+      newLines.push(newLine);
+      let regex = new RegExp(`{`, 'g');
+      let result = line.match(regex);
+      if (result) {
+        depth += result.length;
+      }
+
+    })
+    this.code = newLines.join('\n');
+
   }
 
   runCode() {
@@ -61,16 +85,16 @@ export class TemplateEditorComponent implements OnInit {
     )
   }
 
-  analyzeCode(){
+  analyzeCode() {
     this.codeRunner.analyzeCode(this.code).subscribe(
-      (data: {variables: any[], useOfArgs: boolean, useOfInput: boolean})=> {
+      (data: { variables: any[], useOfArgs: boolean, useOfInput: boolean }) => {
         console.log(data);
-        data.variables.forEach( variable => {
-          this.variables.push({name:variable.name, value:variable.values});
+        data.variables.forEach(variable => {
+          this.variables.push({ name: variable.name, value: variable.values });
         })
         this.detections = {
-          useOfInput :data.useOfInput,
-          useOfArgs : data.useOfArgs
+          useOfInput: data.useOfInput,
+          useOfArgs: data.useOfArgs
         }
 
       },
@@ -81,25 +105,26 @@ export class TemplateEditorComponent implements OnInit {
       }
     );
   }
-  
-  saveTemplate(){
+
+  saveTemplate() {
     this.error = [];
-    if(!this.text){
+    if (!this.text) {
       this.error.push('Please insert template text!');
     }
-    if(!this.code){
+    if (!this.code) {
       this.error.push('Please insert template code!');
 
     }
+    this.formatCode();
     let template = {
-      code : this.code, 
-      args :this.args,
-      stdin : this.stdin,
-      vars : this.variables,
-      text : this.text
+      code: this.code,
+      args: this.args,
+      stdin: this.stdin,
+      vars: this.variables,
+      text: this.text
     }
 
-    if(this.error.length> 0){
+    if (this.error.length > 0) {
       return;
     }
     this.codeRunner.saveTemplate(template).subscribe((data => {
@@ -108,7 +133,7 @@ export class TemplateEditorComponent implements OnInit {
     }))
   }
 
-  deleteError(err){
+  deleteError(err) {
     this.error = this.error.filter(item => item != err);
     console.log('deletederrot');
   }
