@@ -46,7 +46,7 @@ export class TestComponent implements OnInit {
 
     this.data.forEach(pitalica => {
       if (pitalica.checkAnswer) {
-        if (pitalica.correctAnwser.trim() == pitalica.checkAnswer.trim()) {
+        if (pitalica.correctAnwser.trim() == pitalica.checkAnswer) {
           this.points++;
           pitalica.correct = true;
         }
@@ -64,6 +64,8 @@ export class TestComponent implements OnInit {
 
   startTimer() {
     this.timer = 25*60; //25 min
+    this.minutes = '25';
+    this.seconds = '00';
     setInterval(() => {
       if (this.timer > 0) {
         this.timer--;

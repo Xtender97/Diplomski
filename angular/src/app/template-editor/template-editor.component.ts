@@ -34,6 +34,9 @@ export class TemplateEditorComponent implements OnInit {
     this.args = '';
     this.detections = { useOfArgs: false, useOfInput: false };
     this.variables = [];
+    this.text = '';
+    this.error = [];
+    this.analyzed = false;
 
   }
 
@@ -103,6 +106,7 @@ export class TemplateEditorComponent implements OnInit {
       this.error.push('Please insert template code!');
       return;
     }
+    this.error = [];
     this.variables = [];
     this.detections = { useOfArgs: false, useOfInput: false };
     this.codeRunner.analyzeCode(this.code).subscribe(

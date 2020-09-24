@@ -147,7 +147,7 @@ exports.inputDetected = function detectedInputUse(code) {
 }
 
 exports.analyzer = function regexVarArrayDefinition(code) {
-    let regex = new RegExp(`\\b(unsigned)?\\s*(int|char|long|float|double)\\s*(\\w*)\\s*\\[(\\w*)?\\](\\[(\\w*)?\\])?\\s*\\=\\s*\\s*\\{([^\\}]*)\\s*\\}(\\s*\\,\\s*(\\w*)\\s*\\[(\\w*)?\\](\\[(\\w*)?\\])?\\s*\\=\\s*\\s*\\{([^\\}]*)\\s*\\})*`, 'g');
+    let regex = new RegExp(`\\b(unsigned)?\\s*(int|char|long|float|double)\\s*\\*?\\s*(\\w*)\\s*\\[(\\w*)?\\](\\[(\\w*)?\\])?\\s*\\=\\s*\\s*\\{([^\\}]*)\\s*\\}(\\s*\\,\\s*(\\w*)\\s*\\[(\\w*)?\\](\\[(\\w*)?\\])?\\s*\\=\\s*\\s*\\{([^\\}]*)\\s*\\})*`, 'g');
     let result = [...code.matchAll(regex)];
     let variables = analyzeArrayDefinition(result);
     console.log(variables);

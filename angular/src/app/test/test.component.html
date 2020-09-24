@@ -8,7 +8,7 @@
     <div *ngIf="data.length > 0" class="anwsers">
         <div *ngFor="let anwser of data[pageNumber].anwsers" class="anwser">
             <label for="{{anwser}}">{{anwser}}</label>
-            <input type="radio" value="{{anwser}}" name="anwser" id="{{anwser}}"
+            <input type="radio" value="{{anwser}}" name="anwser" id="{{anwser}}" [checked]="anwser == data[pageNumber].checkAnswer"
                 (click)="checkAnswer(data[pageNumber], anwser)">
         </div>
         <div class="buttons">

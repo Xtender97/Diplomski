@@ -13,7 +13,7 @@ async function asyncForEach(array, callback) {
 }
 
 exports.getTest = (req, res) => {
-    Template.findAll({ order: Sequelize.literal('rand()'), limit: 5 }).then(async (templates) => {
+    Template.findAll({ order: Sequelize.literal('rand()'), limit: 5}).then(async (templates) => {
         try {
             for (let index = 0; index < templates.length; index++) {
                 template = templates[index];
@@ -35,12 +35,15 @@ exports.getTest = (req, res) => {
                     fs.unlinkSync(fileName + ".out");
                     console.log(testResult);
                 }
+                console.log('gotovo1');
 
                 template.correctAnwser = testResult.stdout.toString();
                 // console.log(template);
+                console.log('gotovo2');
+
                 template.anwsers = generateFalseAnwsers(template.correctAnwser);
                 // console.log(template);
-
+                console.log('gotovo3    ');
 
             }
         }
@@ -115,7 +118,7 @@ function generateNewArgs(oldArgs) {
 }
 
 function generateFalseAnwsers(correctAnwser) {
-   
+
     correctAnwser = correctAnwser.trim();
     let array = correctAnwser.split(' ');
 
@@ -126,7 +129,7 @@ function generateFalseAnwsers(correctAnwser) {
             let lastChar = array[array.length - 1];
             array[array.length - 1] = array[array.length - 2];
             array[array.length - 2] = lastChar;
-         } else {
+        } else {
             shuffleArray(array);
         }
         anwsers.push(array.join(' '));
@@ -175,6 +178,7 @@ function generateFalseAnwsers(correctAnwser) {
 
             }
             anwsers.push(elem);
+            
 
             // i jos pokreni sa slicnim argumentima ili promenljivim
         } else {
@@ -188,19 +192,54 @@ function generateFalseAnwsers(correctAnwser) {
         }
         //uvek uradi shuffle
         let charArray = correctAnwser.split('');
-        shuffleArray(charArray);
-        let shuffledAnswer = charArray.join('');
-        while (shuffledAnswer == correctAnwser) {
-            charArray = correctAnwser.split('');
-            shuffleArray(charArray);
-            shuffledAnswer = charArray.join('');
-        }
-        anwsers.push(shuffledAnswer);
 
+        if (charArray.length > 1) {
+            if (charArray.length == 2) {
+                // swap elems
+                let lastChar = charArray[charArray.length - 1];
+                charArray[charArray.length - 1] = charArray[charArray.length - 2];
+                charArray[charArray.length - 2] = lastChar;
+            } else {
+                shuffleArray(charArray);
+            }
+            let shuffledAnswer = charArray.join('');
+            let cnt = 0;
+            while (shuffledAnswer == correctAnwser) {
+                console.log("shuff = correctAnwser");
+                charArray = correctAnwser.split('');
+                shuffleArray(charArray);
+                shuffledAnswer = charArray.join('');
+                cnt++;
+                if(cnt == 1000){
+                    break;
+                }
+            }
+            anwsers.push(shuffledAnswer);
+        }
+        else {
+
+            if (!isNaN(correctAnwser)) {
+                // ako je BROJ
+                let elem = correctAnwser;
+                let randomNumber = Math.random();
+                if (randomNumber <= 0.5) {
+                    elem = +elem + 2; // MOZE DA SE ODUZME NEKI DRUGI RANDOM BROJ
+                }
+                else {
+
+                    elem = +elem - 2;
+
+                }
+                anwsers.push(elem);
+
+            } else {
+                
+            }
+        }
     }
     return anwsers;
 
- 
+
 }
 
 function shuffleArray(array) {
@@ -215,7 +254,7 @@ function shuffleArray(array) {
 function changeVarValue(variable) {
 
     let type = variable.type;
-    if (type == 'int' || type == 'unsigned char') {
+    if (type == 'int' || type == 'unsigned char' || type == 'unsigned int') {
         let regex = new RegExp(`(0x[0-9abcdef]+)|(\\d+)`, 'g');
         let result = [...variable.value.matchAll(regex)];
         let newValue = '';
@@ -240,7 +279,27 @@ function changeVarValue(variable) {
 
     }
     else {
-        // string 
+        console.log(variable);
+        let regex = new RegExp(`"\\w+"`, 'g'); // pazi na  ' ' navodnike
+        let result = [...variable.value.matchAll(regex)];
+        let newValue = '';
+        for (let i = 0; i < result.length; i++) {
+            let value = chance.word({ length: result[i][0].length - 2 });
+            if (i == 0 && result.length == 1 || i == result.length - 1) {
+                newValue += `"${value}"`;
+            }
+            else {
+                newValue += `"${value}", `;
+            }
+
+        }
+        if (variable.newValue) {
+            variable.oldValue = variable.newValue;
+        }
+        else {
+            variable.oldValue = variable.value;
+        }
+        variable.newValue = newValue;
     }
 }
 
