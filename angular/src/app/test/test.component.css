@@ -3,43 +3,130 @@
     width: 100%;
     height: 100%;
     grid-template-rows: fit-content(100px) 3fr fit-content(100px);
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 4fr;
     justify-content: center;
     align-items: start;
 }
 
 .text {
+    grid-column: 2 / 3;
     width: 95%;
     margin: 10px auto;
     font-size: 18px;
     padding: 20px 10px;
 }
+
 .code {
+    grid-column: 2 / 3;
     width: 95%;
     height: 95%;
     margin: 10px auto;
     border: 1px solid rgb(155, 146, 146);
-    resize:none;
+    resize: none;
     overflow: visible;
     display: inline-block;
     font-size: 16px;
-    
-}
-.code:disabled {
-    color:black;
 }
 
-.anwsers{
+.code:disabled {
+    color: black;
+}
+
+.anwsers {
+    grid-column: 2 / 3;
     display: flex;
     width: 95%;
     margin: 10px auto;
-    justify-content: space-around;
+    justify-content: space-between;
     align-self: end;
-    padding:10px 0px;
-    
+    padding: 10px 0px;
 }
 
-.anwser{
+.anwser {
     display: inline-block;
-    padding:10px;
+    padding: 10px;
+}
+.buttons{
+    justify-self: right;
+}
+
+.sidePanel {
+    margin: 10px auto;
+    padding: 20px 10px;
+    width: 90%;
+    grid-column: 1 / 2;
+    grid-row: 1 / 4;
+    /* border: 1px solid rgb(155, 146, 146); */
+    align-content: center;
+}
+
+.timer {
+    width: 98%;
+    margin: 10px auto;
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.square {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    width: 50px;
+    text-align: center;
+    margin: auto 5px;
+    border: 1px solid #1976d2;
+    border-radius: 3px;
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+}
+
+.square:hover{
+    cursor: pointer;
+    background-color: #3a92e9;
+}
+
+.navigation {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin:10px auto;
+}
+
+.selected{
+    background-color: #3f00a3;
+    border: 1px solid #3f00a3;
+
+}
+.correct {
+    background-color: #1af012;
+    border: 1px solid #1af012;
+}
+.correct:hover {
+    background-color: #1af012;
+    border: 1px solid #1af012;
+}
+
+.wrong {
+    background-color: #fa0612;
+    border: 1px solid #fa0612;
+}
+.wrong:hover {
+    background-color: #fa0612;
+    border: 1px solid #fa0612;
+}
+
+.card {
+    grid-column: 1 / 3;
+    grid-row: 1 / 4;
+    margin: auto;
+    width: 50%;
+    padding: 20px 30px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    justify-content:center;
 }

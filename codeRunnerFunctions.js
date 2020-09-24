@@ -61,6 +61,7 @@ exports.execute = function executeMain(progName, res, args, input) {
 exports.testExecute = function executeMain(progName, args, input) {
     return new Promise((resolve, reject) =>{
         exec(`gcc ${progName} -o ${progName}.out`, (err, stdout, stderr) => {
+            try{
             if (err) {
                 console.error(err);
                 resolve(null);
@@ -106,7 +107,10 @@ exports.testExecute = function executeMain(progName, args, input) {
             });
     
             console.log(stdout);
-            console.log(stderr);
+            console.log(stderr);}
+            catch(err){
+                console.log(err);
+            }
         });
     });
 
@@ -148,7 +152,7 @@ exports.analyzer = function regexVarArrayDefinition(code) {
     let variables = analyzeArrayDefinition(result);
     console.log(variables);
 
-    let regex1 = new RegExp(`^\\s*(unsigned\\s*)?(int|char)\\s*(\\w+)\\s*=\\s*(0x\\d+|\\d+|'\\w'|"\\w+")([^;]*)`, 'gm');
+    let regex1 = new RegExp(`^\\s*(unsigned)?\\s*(int|char)\\s*(\\w+)\\s*=\\s*(0x\\d+|\\d+|'\\w'|"\\w+")([^;]*)`, 'gm');
     let result1 = [...code.matchAll(regex1)];
     let variables1 = analyzeVarDefinition(result1);
     variables = variables.concat(variables1);

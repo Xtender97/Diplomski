@@ -1,15 +1,47 @@
-<div class="container">
+<div *ngIf="!finished" class="container">
     <div *ngIf="data.length > 0" class="text">
-        {{data[0].text}}
+        {{data[pageNumber].text}}
     </div>
-   
 
-    <textarea class="code" disabled="true">{{data[0].code}}</textarea>
-    <div class="anwsers">
-        <div *ngFor="let anwser of data[0].anwsers" class="anwser">
+
+    <textarea *ngIf="data.length > 0" class="code" disabled="true">{{data[pageNumber].code}}</textarea>
+    <div *ngIf="data.length > 0" class="anwsers">
+        <div *ngFor="let anwser of data[pageNumber].anwsers" class="anwser">
             <label for="{{anwser}}">{{anwser}}</label>
-            <input type="radio" value="{{anwser}}" name="anwser" id="{{anwser}}">
+            <input type="radio" value="{{anwser}}" name="anwser" id="{{anwser}}"
+                (click)="checkAnswer(data[pageNumber], anwser)">
         </div>
-        <button class="button" type="button" (click)="next()">Next</button>
+        <div class="buttons">
+            <button class="button" type="button" (click)="previous()">Previous</button>
+            <button class="button" type="button" (click)="next()">Next</button>
+            <button class="button" type="button" (click)="finish()">Finish</button>
+
+        </div>
+
     </div>
+    <div class="sidePanel">
+        <div class="timer">{{minutes}}:{{seconds}}</div>
+        <div class="navigation">
+            <div *ngFor="let item of data;let indexOfelement=index;"
+                [ngClass]="indexOfelement == pageNumber?'selected':''" class="square" (click)="goTo(indexOfelement)">
+                {{indexOfelement +1}}</div>
+        </div>
+    </div>
+</div>
+<div *ngIf="finished" class="container">
+
+    <div class=card>
+
+        <div style="text-align: center; font-size: 20px;">You earned {{points}} points out of {{data.length}}!</div>
+        <div class="navigation">
+            <div *ngFor="let item of data;let indexOfelement=index;" [ngClass]="item.correct?'correct':'wrong'"
+                class="square">{{indexOfelement +1}}</div>
+        </div>
+        <div style="text-align: center; font-size: 20px;">
+            <button type="button" class="big-button" (click)="restart()" >Try again</button>
+        </div>
+
+
+    </div>
+
 </div>

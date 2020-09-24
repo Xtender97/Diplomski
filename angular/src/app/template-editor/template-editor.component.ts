@@ -20,12 +20,21 @@ export class TemplateEditorComponent implements OnInit {
   stdin: string;
   text: string;
   error: string[] = [];
+  analyzed:boolean = false;
 
   constructor(
     private codeRunner: CodeRunnerService
   ) { }
 
   ngOnInit(): void {
+    this.code = '';
+    this.stdout = '';
+    this.stderr = '';
+    this.stdin = '';
+    this.args = '';
+    this.detections = { useOfArgs: false, useOfInput: false };
+    this.variables = [];
+
   }
 
   onInit(editor) {
@@ -67,6 +76,10 @@ export class TemplateEditorComponent implements OnInit {
   runCode() {
     this.stderr = '';
     this.stdout = '';
+    if (!this.code) {
+      this.error.push('Please insert template code!');
+      return;
+    }
     this.codeRunner.runCode(this.code, this.args, this.stdin).subscribe(
       (data: any) => {
         this.error = [];
@@ -86,16 +99,23 @@ export class TemplateEditorComponent implements OnInit {
   }
 
   analyzeCode() {
+    if (!this.code) {
+      this.error.push('Please insert template code!');
+      return;
+    }
+    this.variables = [];
+    this.detections = { useOfArgs: false, useOfInput: false };
     this.codeRunner.analyzeCode(this.code).subscribe(
       (data: { variables: any[], useOfArgs: boolean, useOfInput: boolean }) => {
         console.log(data);
         data.variables.forEach(variable => {
-          this.variables.push({ name: variable.name, value: variable.values });
+          this.variables.push({ name: variable.name, value: variable.values, raw: variable.raw, class: variable.class, type: variable.type});
         })
         this.detections = {
           useOfInput: data.useOfInput,
           useOfArgs: data.useOfArgs
         }
+        this.analyzed = true;
 
       },
       err => {
@@ -115,7 +135,11 @@ export class TemplateEditorComponent implements OnInit {
       this.error.push('Please insert template code!');
 
     }
+    if(!this.analyzed){
+      this.error.push('Please analyze code before saving!');
+    }
     this.formatCode();
+
     let template = {
       code: this.code,
       args: this.args,
@@ -130,6 +154,8 @@ export class TemplateEditorComponent implements OnInit {
     this.codeRunner.saveTemplate(template).subscribe((data => {
       console.log(data);
       this.error = [];
+      this.ngOnInit();
+
     }))
   }
 

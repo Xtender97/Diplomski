@@ -12,22 +12,78 @@ export class TestComponent implements OnInit {
     private testService: TestService
   ) { }
 
-  data:any[] = [];
+  data: any[] = [];
+  pageNumber: number = 0;
+  timer: number;
+  minutes: string;
+  seconds: string;
+  finished: boolean = false;
+  points: number = 0;
 
   ngOnInit(): void {
-    this.testService.getTest().subscribe((data: {pitalice: any[]})=> {
+    this.data = [];
+    this.pageNumber = 0;
+    this.finished = false;
+    this.points = 0;
+    this.testService.getTest().subscribe((data: { pitalice: any[] }) => {
       console.log(data);
       this.data = data.pitalice;
-      // this.data[0].anwsers = [this.data[0].correctAnwser,this.data[0].correctAnwser,this.data[0].correctAnwser];
-
+      this.startTimer();
     },
-    err => {
-      console.log(err);
+      err => {
+        console.log(err);
+      })
+  }
+
+  next() {
+    if (this.pageNumber < this.data.length - 1) {
+      this.pageNumber++;
+    }
+
+  }
+
+  finish() {
+
+    this.data.forEach(pitalica => {
+      if (pitalica.checkAnswer) {
+        if (pitalica.correctAnwser.trim() == pitalica.checkAnswer.trim()) {
+          this.points++;
+          pitalica.correct = true;
+        }
+      }
     })
+    this.finished = true;
+
+
+  }
+  previous() {
+    if (this.pageNumber > 0) {
+      this.pageNumber--;
+    }
   }
 
-  next(){
-
+  startTimer() {
+    this.timer = 25*60; //25 min
+    setInterval(() => {
+      if (this.timer > 0) {
+        this.timer--;
+        this.minutes = ((this.timer - (this.timer % 60)) / 60) < 10 ? '0' + ((this.timer - (this.timer % 60)) / 60).toString() : ((this.timer - (this.timer % 60)) / 60).toString();
+        this.seconds = (this.timer % 60) < 10 ? '0' + (this.timer % 60).toString() : (this.timer % 60).toString();
+      }
+      else {
+        this.finish();
+      }
+    }, 1000)
+  }
+  goTo(index) {
+    this.pageNumber = index;
   }
 
+  checkAnswer(pitalica, anwser) {
+    pitalica.checkAnswer = anwser;
+
+  }
+  restart(){
+    this.ngOnInit();
+  }
 }

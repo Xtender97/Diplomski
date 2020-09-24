@@ -14,6 +14,8 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { NavbarComponent } from './navbar/navbar.component';
 import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 import { TestComponent } from './test/test.component';
+import { LandingPagaComponent } from './landing-paga/landing-paga.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { TestComponent } from './test/test.component';
     MessageComponent,
     NavbarComponent,
     StudentDashboardComponent,
-    TestComponent
+    TestComponent,
+    LandingPagaComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

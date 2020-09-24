@@ -3,8 +3,9 @@
     height: 100%;
     display: grid;
     background-color: #1976d2;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 0.3fr 2fr 1fr;
     align-items: center;
+    font-size : 20px;
 }
 
 .right {
@@ -14,9 +15,12 @@
 .nav{
     justify-self: start;
 }
+.logo{
+    justify-self: center;
+}
 
 a {
-    padding: 7px;
+    padding: 7px 15px;
     text-decoration: none;
     color: white;
     margin-right: 10px;
@@ -24,4 +28,9 @@ a {
 }
 a:hover {
     background-color: #3493f1;
+}
+
+.image {
+    border-radius: 5px;
+    margin-left: 10px;
 }

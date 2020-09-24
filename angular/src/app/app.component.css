@@ -42,7 +42,10 @@ p {
 }
 
 .footer {
-  align-self: end;
+  align-self: stretch;
   background-color: #5d5c61;
   grid-column: 1/5;
+  text-align: center;
+  color: rgb(124, 124, 124);
+  line-height:60px;
 }

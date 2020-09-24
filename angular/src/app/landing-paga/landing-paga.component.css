@@ -1,0 +1,13 @@
+.image {
+    border-radius: 50px;
+    margin: 30px auto;
+}
+div {
+    text-align: center;
+    font-size : 18px;
+    color: rgb(124, 124, 124);
+    margin-bottom: 10px;
+}
+h1 {
+color: #000;
+}

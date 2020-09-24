@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
 body {
     margin: 0px;
     padding: 0px;
@@ -9,21 +10,35 @@ app-root {
     height: 100vh;
 }
 
-.button{
+.button {
     padding: 7px 15px;
     border: 1px solid rgb(59, 173, 30);
     border-radius: 2px;
-    background-color:  rgb(60, 189, 28);
+    background-color: rgb(60, 189, 28);
     margin: 0px 3px;
     /* color: white; */
 }
 
 .green {
-    background-color:  rgb(60, 189, 28);
-
+    background-color: rgb(60, 189, 28);
 }
-.button:hover{
-    cursor: pointer;
-    background-color:  rgb(55, 177, 25);
 
+.button:hover {
+    cursor: pointer;
+    background-color: rgb(55, 177, 25);
+}
+
+.big-button {
+    padding: 20px 35px;
+    border: 1px solid #fff649;
+    border-radius: 10px;
+    background-color: #fff649;
+    margin: 0px 3px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.big-button:hover {
+    cursor: pointer;
+    background-color: #fcef05;
 }

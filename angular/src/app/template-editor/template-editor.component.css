@@ -74,11 +74,13 @@
     resize: none;
 }
 .commands{
+    display: flex;
     width:98%;
     border: 1px solid rgb(155, 146, 146);
     border-radius: 3px;
     margin: 3px auto;
     padding: 5px 5px;
+    justify-content: space-around;
 }
 
 .variable{

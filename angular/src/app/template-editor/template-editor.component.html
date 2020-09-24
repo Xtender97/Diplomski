@@ -18,6 +18,7 @@
             <div class="errlabel">Error</div>
             <div *ngFor="let err of error" class="errorMessage">{{err}}   <span class="closebtn" (click)="deleteError(err)">&times;</span> </div>
         </div>
+
         <div class="text">
             <div class="label">Text</div>
             <textarea class="textarea" [(ngModel)]="text" spellcheck="false"></textarea>
@@ -34,10 +35,10 @@
             </div>
         </div>
         <div class="commands">
+            <button class="button" (click)="formatCode()">Format</button>
             <button class="button" (click)="runCode()">Run</button>
             <button class="button" (click)="analyzeCode()">Analyze</button>
             <button class="button" (click)="saveTemplate()">Save</button>
-            <button class="button" (click)="formatCode()">Format</button>
 
         </div>
         <div *ngIf="variables.length>0 || detections.useOfArgs || detections.useOfInput" class="detections">
