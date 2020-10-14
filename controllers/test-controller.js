@@ -35,15 +35,9 @@ exports.getTest = (req, res) => {
                     fs.unlinkSync(fileName + ".out");
                     console.log(testResult);
                 }
-                console.log('gotovo1');
-
+             
                 template.correctAnwser = testResult.stdout.toString();
-                // console.log(template);
-                console.log('gotovo2');
-
                 template.anwsers = generateFalseAnwsers(template.correctAnwser);
-                // console.log(template);
-                console.log('gotovo3    ');
 
             }
         }
@@ -63,7 +57,6 @@ exports.getTest = (req, res) => {
 }
 
 function randomizeTemplate(template) {
-    // template = template.get({ plain: true });
     if (template.argsCount > 0) {
         template.newArgs = generateNewArgs(template.args);
         let regex = new RegExp(`${template.args.trim()}`, 'g');
@@ -140,7 +133,7 @@ function generateFalseAnwsers(correctAnwser) {
                 // is number 
                 let randomNumber = Math.random();
                 if (randomNumber <= 0.25) {
-                    elem = +elem + 1; // MOZE DA SE ODUZME NEKI DRUGI RANDOM BROJ
+                    elem = +elem + 1; 
                 }
                 else {
                     if (randomNumber > 0.25 && randomNumber < 0.50) {
@@ -170,7 +163,7 @@ function generateFalseAnwsers(correctAnwser) {
             let elem = correctAnwser;
             let randomNumber = Math.random();
             if (randomNumber <= 0.5) {
-                elem = +elem + 1; // MOZE DA SE ODUZME NEKI DRUGI RANDOM BROJ
+                elem = +elem + 1; 
             }
             else {
 
@@ -180,7 +173,7 @@ function generateFalseAnwsers(correctAnwser) {
             anwsers.push(elem);
             
 
-            // i jos pokreni sa slicnim argumentima ili promenljivim
+            
         } else {
 
             //swap last to characters
@@ -223,7 +216,7 @@ function generateFalseAnwsers(correctAnwser) {
                 let elem = correctAnwser;
                 let randomNumber = Math.random();
                 if (randomNumber <= 0.5) {
-                    elem = +elem + 2; // MOZE DA SE ODUZME NEKI DRUGI RANDOM BROJ
+                    elem = +elem + 2; 
                 }
                 else {
 
@@ -280,7 +273,7 @@ function changeVarValue(variable) {
     }
     else {
         console.log(variable);
-        let regex = new RegExp(`"\\w+"`, 'g'); // pazi na  ' ' navodnike
+        let regex = new RegExp(`"\\w+"`, 'g'); 
         let result = [...variable.value.matchAll(regex)];
         let newValue = '';
         for (let i = 0; i < result.length; i++) {

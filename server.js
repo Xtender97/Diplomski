@@ -60,13 +60,10 @@ const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 app.use(cors());
 
-app.use('/template',templateRouter);
+app.use('/template', templateRouter);
 app.use('/auth', authRouter);
 app.use('/test', testRouter);
 
-
-// app.use('/api/auth', auth);
-// app.use("/", express.static(path.join(__dirname, "frontend")));
 
 sequelize
     .authenticate()
@@ -79,13 +76,6 @@ sequelize
         console.error('Unable to connect to the database:', err);
     });
 
-/*app.listen(port, () => {
-    console.log(`Server started on ${port}`);
-});*/
-
-// app.use((req, res, next) => {
-//     res.sendFile(path.join(__dirname, "frontend", "index.html"));
-//   });
 
 const server = http.createServer(app);
 server.on("error", onError);

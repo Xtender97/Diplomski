@@ -1,0 +1,24 @@
+Neophodno:
+node.js
+npm
+angular cli
+mysql (phpmyadmin)
+
+Potrebno je promeniti argumente konstruktora odgovarajucim vrednostima
+primer:
+const sequelize = new Sequelize('ime_baze_podataka', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'mysql',
+    logging: false
+});
+
+pokretanje servera:
+u korenom direktorijumu projekta izvrsiti komande
+$ npm install
+$ node server.js
+pokretanje klijenta:
+u zasebnom terminalu: 
+$ cd /angular
+$ npm install
+$ ng serve -o
+
